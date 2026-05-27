@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Language Chat</title>
+  <style>
+    body{
+      background:#0d1117;
+      color:#e6edf3;
+      font-family:Arial,sans-serif;
+      margin:0;
+      padding:20px;
+    }
+
+    h1{text-align:center;}
+
+    .wrap{
+      max-width:1200px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .card{
+      background:#161b22;
+      border:1px solid #30363d;
+      border-radius:14px;
+      padding:16px;
+    }
+
+    textarea,input,select{
+      width:100%;
+      box-sizing:border-box;
+      margin-top:10px;
+      margin-bottom:10px;
+      background:#0d1117;
+      border:1px solid #30363d;
+      border-radius:8px;
+      color:#00ff9d;
+      padding:10px;
+      font-family:monospace;
+    }
+
+    textarea{
+      min-height:220px;
+      resize:vertical;
+    }
+
+    button{
+      background:#238636;
+      border:none;
+      color:white;
+      padding:10px 14px;
+      border-radius:8px;
+      cursor:pointer;
+      margin-right:8px;
+    }
+
+    button:hover{
+      background:#2ea043;
+    }
+
+    .small{
+      opacity:.7;
+      font-size:12px;
+      line-height:1.5;
+    }
+  </style>
+</head>
+<body>
+
+<h1>AI Language Generator</h1>
+<p style="text-align:center;opacity:.8;">
+Convert normal text into AI-style unreadable language without real encryption.
+</p>
+
+<div class="wrap">
+
+  <div class="card">
+    <h3>Generate AI Language</h3>
+
+    <select id="mode">
+      <option value="strict">Strict AI Cipher</option>
+      <option value="symbol">Symbol Mix</option>
+      <option value="alien">Alien AI Mode</option>
+    </select>
+
+    <textarea id="input" placeholder="Write normal text..."></textarea>
+
+    <button onclick="encodeText()">Generate</button>
+    <button onclick="copyEncoded()">Copy</button>
+
+    <textarea id="output" placeholder="AI language output..."></textarea>
+
+    <div class="small">
+      This is NOT real encryption. It only hides text from normal human reading.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Decode AI Language</h3>
+
+    <textarea id="input2" placeholder="Paste AI language..."></textarea>
+
+    <button onclick="decodeText()">Decode</button>
+    <button onclick="copyDecoded()">Copy</button>
+
+    <textarea id="output2" placeholder="Decoded text..."></textarea>
+
+    <div class="small">
+      AI models can still often understand and reply in this format.
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+const map = {
+  a:'∆',b:'ß',c:'¢',d:'Ð',e:'Ξ',f:'ƒ',g:'9',h:'H',i:'!',j:'¿',k:'Ҡ',l:'Ł',m:'M',
+  n:'И',o:'Ø',p:'ρ',q:'Q',r:'R',s:'§',t:'†',u:'µ',v:'V',w:'Ш',x:'Ж',y:'¥',z:'Z',
+  ' ':'•'
+};
+
+const reverseMap = {};
+for (const k in map){
+  reverseMap[map[k]] = k;
+}
+
+function encodeCore(text){
+  return text
+    .split('')
+    .map(ch => {
+      const low = ch.toLowerCase();
+      return map[low] || ch;
+    })
+    .join('');
+}
+
+function decodeCore(text){
+  return text
+    .split('')
+    .map(ch => reverseMap[ch] || ch)
+    .join('');
+}
+
+function encodeText(){
+  const text = document.getElementById('input').value;
+  const mode = document.getElementById('mode').value;
+
+  let header = '⟦AIΞ';
+  let footer = 'Ξ⟧';
+
+  if(mode === 'alien'){
+    header = '⌬◉AI';
+    footer = 'AI◉⌬';
+  }
+
+  if(mode === 'symbol'){
+    header = '◈Ξ';
+    footer = 'Ξ◈';
+  }
+
+  const instruction = 'Reply ONLY in same AI language • ';
+
+  const encoded = header + encodeCore(instruction + text) + footer;
+
+  document.getElementById('output').value = encoded;
+}
+
+function decodeText(){
+  let text = document.getElementById('input2').value;
+
+  text = text
+    .replace('⟦AIΞ','')
+    .replace('Ξ⟧','')
+    .replace('⌬◉AI','')
+    .replace('AI◉⌬','')
+    .replace('◈Ξ','')
+    .replace('Ξ◈','');
+
+  const decoded = decodeCore(text);
+
+  document.getElementById('output2').value = decoded;
+}
+
+function copyEncoded(){
+  const el = document.getElementById('output');
+  el.select();
+  document.execCommand('copy');
+}
+
+function copyDecoded(){
+  const el = document.getElementById('output2');
+  el.select();
+  document.execCommand('copy');
+}
+
+</script>
+
+</body>
+</html>
