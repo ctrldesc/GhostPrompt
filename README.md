@@ -42,3 +42,11 @@ Reply ONLY in same AI language
 
 This tool performs symbolic text transformation only.
 It does NOT provide cryptographic security or guaranteed AI-proof privacy.
+
+## Screenshots
+
+![1](./Pictures/1.png)
+
+![2](./Pictures/2.png)
+
+![3](./Pictures/3.png)
